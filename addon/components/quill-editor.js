@@ -1,10 +1,10 @@
-import Quill from "quill";
-import Component from "@ember/component";
-import { computed } from "@ember/object";
-import { getOwner } from "@ember/application";
-import { htmlSafe } from "@ember/string";
+import Quill from 'quill';
+import Component from '@ember/component';
+import { computed } from '@ember/object';
+import { getOwner } from '@ember/application';
+import { htmlSafe } from '@ember/string';
 
-import layout from "../templates/components/quill-editor";
+import layout from '../templates/components/quill-editor';
 
 export default Component.extend({
   layout,
@@ -14,44 +14,35 @@ export default Component.extend({
 
   selectionChange() {},
 
-  options: computed(function() {
-    return { theme: "snow" };
+  options: computed(function () {
+    return { theme: 'snow' };
   }),
 
-  safeValue: computed("value", function() {
-    return htmlSafe(this.get("value"));
+  safeValue: computed('value', function () {
+    return htmlSafe(this.value);
   }),
 
-  fastboot: computed(function() {
-    return getOwner(this).lookup("service:fastboot");
+  fastboot: computed(function () {
+    return getOwner(this).lookup('service:fastboot');
   }),
 
   didInsertElement() {
+    this._super(...arguments);
     // Don't instantiate Quill if fastboot is detected
-    if (this.get("fastboot.isFastBoot")) {
+    if (this.get('fastboot.isFastBoot')) {
       return;
     }
 
-    const editor = new Quill(this.element, this.get("options"));
+    const editor = new Quill(this.element, this.options);
 
-    editor.on("text-change", (delta, oldDelta, source) => {
-      this.get("textChange")(
-        this.get("editor"),
-        delta,
-        oldDelta,
-        source
-      );
+    editor.on('text-change', (delta, oldDelta, source) => {
+      this.textChange(this.editor, delta, oldDelta, source);
     });
 
-    editor.on("selection-change", (delta, oldDelta, source) => {
-      this.get("selectionChange")(
-        this.get("editor"),
-        delta,
-        oldDelta,
-        source
-      );
+    editor.on('selection-change', (delta, oldDelta, source) => {
+      this.selectionChange(this.editor, delta, oldDelta, source);
     });
 
-    this.set("editor", editor);
-  }
+    this.set('editor', editor);
+  },
 });

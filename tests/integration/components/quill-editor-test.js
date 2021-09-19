@@ -2,19 +2,19 @@ import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import Quill from 'quill';
 import Service from '@ember/service';
-import { getOwner } from '@ember/application'; 
+import { getOwner } from '@ember/application';
 
 moduleForComponent('quill-editor', 'Integration | Component | quill editor', {
-  integration: true
+  integration: true,
 });
 
-test('it renders', function(assert) {
+test('it renders', function (assert) {
   this.render(hbs`{{quill-editor}}`);
 
   assert.equal(this.$().text().trim(), '');
 });
 
-test('it attaches the editor on render', function(assert) {
+test('it attaches the editor on render', function (assert) {
   this.set('editor', null);
 
   this.render(hbs`{{quill-editor editor=editor}}`);
@@ -25,29 +25,26 @@ test('it attaches the editor on render', function(assert) {
   );
 
   assert.ok(
-    this.get('editor') instanceof Quill,
+    this.editor instanceof Quill,
     'The editor attribute should be an instance of the Quill editor'
   );
 });
 
-test('it does not attach editor on render if fastboot present', function(assert) {
+test('it does not attach editor on render if fastboot present', function (assert) {
   const FastbootServiceStub = Service.extend({
     isFastBoot: true,
   });
 
   getOwner(this).register('service:fastboot', FastbootServiceStub);
-  
+
   this.set('editor', null);
 
   this.render(hbs`{{quill-editor editor=editor}}`);
 
-  assert.equal(
-    this.get('editor'),
-    null
-  );
+  assert.equal(this.editor, null);
 });
 
-test('it sends textChange action', function(assert) {
+test('it sends textChange action', function (assert) {
   const done = assert.async();
   const expectedText = 'Some new content';
   const htmlStringToInsert = `<h1>${expectedText}</h1>`;
@@ -66,21 +63,17 @@ test('it sends textChange action', function(assert) {
         },
         {
           attributes: {
-            header: 1
+            header: 1,
           },
-          retain: 1
-        }
+          retain: 1,
+        },
       ],
       'The delta should be correct'
     );
 
     assert.ok(oldDelta, 'The old delta should be passed');
 
-    assert.equal(
-      source,
-      'user',
-      'The source of the change should be "user"'
-    );
+    assert.equal(source, 'user', 'The source of the change should be "user"');
 
     done();
   });
@@ -90,7 +83,7 @@ test('it sends textChange action', function(assert) {
   this.$('.ql-editor')[0].innerHTML = htmlStringToInsert;
 });
 
-test('it sends selectionChange action', function(assert) {
+test('it sends selectionChange action', function (assert) {
   const done = assert.async();
 
   this.on('selectionChange', (editor, delta, oldDelta, source) => {
@@ -99,18 +92,15 @@ test('it sends selectionChange action', function(assert) {
       'The editor passed should be an instance of Quill'
     );
 
-    assert.ok(
-      delta.constructor.name === 'Range',
+    assert.strictEqual(
+      delta.constructor.name,
+      'Range',
       'The delta should be a Range object'
     );
 
     assert.equal(oldDelta, null, 'The old delta should be passed');
 
-    assert.equal(
-      source,
-      'user',
-      'The source of the change should be "user"'
-    );
+    assert.equal(source, 'user', 'The source of the change should be "user"');
 
     done();
   });
