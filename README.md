@@ -2,6 +2,8 @@
 
 [![build status](https://gitlab.com/noppo/ember-quill/badges/master/build.svg)](https://gitlab.com/noppo/ember-quill/commits/master)
 
+**This project is fork of [ember-quill](https://gitlab.com/noppo/ember-quill) by Jeffrey Gelens. This project just upgrades ember to latest version and makes it Ember 4 compatible.**
+
 ## Installation
 
 * `ember install ember-quill`
