@@ -6,7 +6,7 @@
 
 ## Installation
 
-* `ember install ember-quill`
+* `ember install ember-quill2`
 
 ## Component example
 ```javascript
