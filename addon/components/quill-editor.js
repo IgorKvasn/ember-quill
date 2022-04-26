@@ -2,7 +2,7 @@ import Quill from 'quill';
 import Component from '@ember/component';
 import { computed } from '@ember/object';
 import { getOwner } from '@ember/application';
-import { htmlSafe } from '@ember/string';
+import { htmlSafe } from '@ember/template';
 
 import layout from '../templates/components/quill-editor';
 
